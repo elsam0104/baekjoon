@@ -6,26 +6,32 @@ using namespace std;
 #define FRONT(x) x+1
 #define TELE(x) x*2
 
-vector<int> v;
-int n, k, cur,_time;
+vector<int> v, visited;
+int n, k,_time;
 
-void bfs()
+void bfs(int cur, int t)
 {
-	while (cur != k)
+	if (visited[cur] != 0 || cur > k * 2 || cur < -k) return;
+	if (cur == k)
 	{
-
+		_time = t;
+		return;
 	}
+	visited[cur] = 1;
+	bfs(FRONT(cur), t + 1);
+	bfs(BACK(cur) - 1, t + 1);
+	bfs(TELE(cur) * 2, t + 1);
 
 }
 int main()
 {
-	fill(v.begin(), v.end(), 0);
+	fill(visited.begin(), visited.end(), 0);
 	cin >> n >> k;
-	cur = n;
+	v.resize(k);
 	for (int i = 0; i < k+1; i++)
 	{
 		v[i] = i+1;
 	}
-	bfs();
+	bfs(n,0);
 	cout << _time;
 }
